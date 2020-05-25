@@ -36,6 +36,7 @@ bool RobotBase::SetPostureDescriber(const LinkPair& kinematicsChain, PostureDesc
 {
     if (pDescriber != nullptr) {
         if (_mPostureDescribers.count(kinematicsChain)) {
+            // what's this?
             _mPostureDescribers.erase(kinematicsChain); // remove instead of setting null solver
         }
         return true;

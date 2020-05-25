@@ -1069,7 +1069,7 @@ private:
     /// \brief Unregisters the robot posture describer for a kinematics chain from baselink to eelink
     /// \param [in] kinematicsChain    a kinematics chain prescribed by a baselink-eelink pair
     /// \return true if the unregistering is successful
-    virtual bool UnregisterPostureDescriber(const LinkPair& kinematicsChain);
+    virtual bool UnregisterPostureDescriber(const LinkPair& kinematicsChain); // do we need unregister? register null pointer instead?
 
     /// \brief Unregisters the robot posture describer for a kinematics chain from the manipulator's baselink to its eelink.
     /// \param [in] pmanip        manipulator that prescribes a kinematics chain by its baselink and eelink
@@ -1090,7 +1090,7 @@ private:
     /// Computes posture state integers for describing the posture of links between the manipulator's baselink and its eelink.
     /// If the manipulator is not specified, then we use the active manipulator.
     /// \param [out] posturevalues     a vector of robot posture state (unsigned) integers at the current of specified dof values
-    /// \param [in]  kinematicsChain   a kinematics chain prescribed by a baselink-eelink pair
+    /// \param [in]  kinematicsChain   a kinematics chain prescribed by a baselink-eelink pair // pmanip
     /// \param [in]  dofvalues         dof values set along the kinematics chain from base link to end-effector link; its size should be either 0 (i.e., using the current dof values) or the same size of the dofs of the kinematics chain
     /// \return true if the registered posture describer successfully computes a vector of posture state values for describing the posture of the kinematics chain.
     virtual bool ComputePostureStates(std::vector<uint16_t>& posturevalues,

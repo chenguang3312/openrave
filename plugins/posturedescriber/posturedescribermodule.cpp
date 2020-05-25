@@ -70,7 +70,8 @@ bool PostureDescriberModule::_LoadPostureDescriberCommand(std::ostream& ssout, s
     const ManipulatorPtr pmanip = probot->GetManipulator(manipname);
     LinkPtr baselink, eelink;
     if(pmanip == nullptr) {
-        baselinkname = manipname; // manipname is in fact the baselink's name
+        // what's the logic here?
+        baselinkname = manipname; // manipname is in fact the baselink's name 
         manipname = ""; // reset
         ssin >> eelinkname;
         baselink = probot->GetLink(baselinkname);

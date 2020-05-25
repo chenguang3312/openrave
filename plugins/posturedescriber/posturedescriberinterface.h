@@ -70,7 +70,7 @@ protected:
     LinkPair _kinematicsChain; ///< the baselink-eelink pair of a kinematics chain
     std::vector<KinBody::JointPtr> _joints; ///< non-static joints from baselink to eelink
     std::vector<int> _armindices; ///< dof indices from baselink to eelink
-    double _fTol = 1e-6; ///< tolerance for determining if a robot posture value is considered 0
+    double _fTol = 1e-6; ///< tolerance for determining if a robot posture value is considered 0 // is single value ok?
     PostureValueFn _posturefn; ///< function that computes posture values and states for a kinematics chain
 };
 
@@ -81,7 +81,7 @@ using PostureFormulation = std::array<std::array<int, 2>, 3>; ///< a posture val
 /// \param [in] x      a posture value
 /// \param [in] tol    tolerance to determine whether x is considered 0.0, so that this value means a hybrid state.
 /// \return 0 if x is considered positive, 1 if considered negative, and 2 (meaning hybrid states) if considered 0.0
-inline uint16_t compute_single_state(const double x, const double fTol) {
+    inline uint16_t compute_single_state(const double x, const double fTol) { // snake?
     return (x > fTol) ? 0 : (x < -fTol) ? 1 : 2; // >= or <= ?
 }
 

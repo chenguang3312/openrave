@@ -26,6 +26,7 @@ using LinkPair = RobotBase::LinkPair; ///< a baselink-eelink pair
 /** \brief <b>[interface]</b> Base class for robot posture describers. <b>If not specified, method is not multi-thread safe.</b> See \ref arch_fksolver.
    \ingroup interfaces
  */
+    // explain posture value, posture state, 
 class OPENRAVE_API PostureDescriberBase : public InterfaceBase
 {
 public:
@@ -38,7 +39,7 @@ public:
 
     /// \brief Checks if we can use a describer class to compute posture values for a kinematics chain from the manipulator's baselink to its eelink.
     /// \return true if this describer class can support the posture description of this kinematics chain.
-    virtual bool Supports(const RobotBase::ManipulatorPtr& pmanip) const;
+    virtual bool Supports(const RobotBase::ManipulatorPtr& pmanip) const; // why const ref?
 
     /// \brief Initializes class members for a kinematics chain from baselink to eelink, provided this class supports the posture description.
     /// \return true if this describer class can support the posture description AND the initialization is successful.
@@ -52,7 +53,7 @@ public:
     /// \param [in]  dofvalues       if empty, then use the current dof values; otherwise these specified dof values must have the same size as the number of dofs in the kinematics chain.
     /// \param [out] posturestates   posture states, whose size is a power of 2. Always non-empty if (1) this class is properly initialized AND (2) dofvalues is either empty or has the correct size.
     /// \return true if (1) this describer class is properly initialized AND (2) dofvalues is either empty or has the correct size.
-    virtual bool ComputePostureStates(std::vector<uint16_t>& posturestates, const std::vector<double>& dofvalues = {}) = 0;
+    virtual bool ComputePostureStates(std::vector<uint16_t>& posturestates, const std::vector<double>& dofvalues = {}) = 0; // why abstract? combine PostureDescriberBase and PostureDescriber?
 
     /// \return the static interface type this class points to (used for safe casting)
     static InterfaceType GetInterfaceTypeStatic() {
@@ -60,7 +61,7 @@ public:
     }
 
 private:
-    virtual const char* GetHash() const final;
+    virtual const char* GetHash() const final; // _GetHash?
 };
 
 using PostureDescriberBasePtr = boost::shared_ptr<PostureDescriberBase>;

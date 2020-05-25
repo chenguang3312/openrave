@@ -88,7 +88,9 @@ NeighbouringTwoJointsRelation AnalyzeTransformBetweenNeighbouringJoints(const Tr
     return o;
 }
 
-RobotPostureSupportType DeriveRobotPostureSupportType(const std::vector<JointPtr> joints) {
+// when there are two describers, can they co-exist?
+// for example, there are two robots in the scene and robot1 uses describer of class A and robot 2 uses describer of class B
+RobotPostureSupportType DeriveRobotPostureSupportType(const std::vector<JointPtr> joints) { // const ref
     if(joints.size() == 6) {
         if(!EnsureAllJointsPurelyRevolute(joints)) {
             RAVELOG_WARN("Not all joints are purely revolute");
@@ -100,6 +102,8 @@ RobotPostureSupportType DeriveRobotPostureSupportType(const std::vector<JointPtr
         const Transform tJ4J5 = joints[3]->GetInternalHierarchyRightTransform() * joints[4]->GetInternalHierarchyLeftTransform();
         const Transform tJ5J6 = joints[4]->GetInternalHierarchyRightTransform() * joints[5]->GetInternalHierarchyLeftTransform();
         if(
+           // just (AnalyzeTransformBetweenNeighbouringJoints(tJ1J2) == NeighbouringTwoJointsRelation::NTJR_Perpendicular)?
+           // != NeighbouringTwoJointsRelation::NTJR_Unknown is not necessary?
             ((AnalyzeTransformBetweenNeighbouringJoints(tJ1J2) & NeighbouringTwoJointsRelation::NTJR_Perpendicular) != NeighbouringTwoJointsRelation::NTJR_Unknown)
             && ((AnalyzeTransformBetweenNeighbouringJoints(tJ2J3) & NeighbouringTwoJointsRelation::NTJR_Parallel)      != NeighbouringTwoJointsRelation::NTJR_Unknown)
             && ((AnalyzeTransformBetweenNeighbouringJoints(tJ3J4) & NeighbouringTwoJointsRelation::NTJR_Perpendicular) != NeighbouringTwoJointsRelation::NTJR_Unknown)
@@ -169,7 +173,9 @@ bool PostureDescriber::Init(const LinkPair& kinematicsChain) {
     const RobotPostureSupportType supporttype = DeriveRobotPostureSupportType(_joints);
     switch(supporttype) {
     case RobotPostureSupportType::RPST_6R_General: {
+        // hard to understand...
         const PostureFormulation
+            // magin numbers
             shoulderform {{
                               {0, -1},
                               {1, -1},

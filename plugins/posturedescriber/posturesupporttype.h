@@ -32,6 +32,7 @@ enum class NeighbouringTwoJointsRelation : uint16_t {
 };
 
 enum class RobotPostureSupportType : uint16_t {
+    // more comment about RPST_6R_General and RPST_4R_Type_A
     RPST_NoSupport  = 0x0,
     RPST_6R_General = 0x1,
     RPST_4R_Type_A  = 0x2,
