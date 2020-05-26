@@ -121,6 +121,7 @@ RobotPostureSupportType DeriveRobotPostureSupportType(const std::vector<JointPtr
             RAVELOG_WARN("Not all joints are purely revolute");
             return RobotPostureSupportType::RPST_NoSupport;
         }
+        // what does tJ1J2 represent?
         const Transform tJ1J2 = joints[0]->GetInternalHierarchyRightTransform() * joints[1]->GetInternalHierarchyLeftTransform();
         const Transform tJ2J3 = joints[1]->GetInternalHierarchyRightTransform() * joints[2]->GetInternalHierarchyLeftTransform();
         const Transform tJ3J4 = joints[2]->GetInternalHierarchyRightTransform() * joints[3]->GetInternalHierarchyLeftTransform();
