@@ -1076,13 +1076,15 @@ private:
     /// \return true if the unregistering is successful
     virtual bool UnregisterPostureDescriber(const ManipulatorConstPtr pmanip);
 
+    using PostureStateInt = uint32_t;
+
     /// \brief Computes posture states to describe the posture of a kinematics chain at the current or specified dof values.
     /// Computes posture state integers for describing the posture of links between baselink and eelink.
     /// \param [out] posturevalues     a vector of robot posture state (unsigned) integers at the current of specified dof values
     /// \param [in]  kinematicsChain   a kinematics chain prescribed by a baselink-eelink pair
     /// \param [in]  dofvalues         dof values set along the kinematics chain from base link to end-effector link; its size should be either 0 (i.e., using the current dof values) or the same size of the dofs of the kinematics chain
     /// \return true if the registered posture describer successfully computes a vector of posture state values for describing the posture of the kinematics chain.
-    virtual bool ComputePostureStates(std::vector<uint16_t>& posturevalues,
+    virtual bool ComputePostureStates(std::vector<PostureStateInt>& posturevalues,
                                       const LinkPair& kinematicsChain,
                                       const std::vector<double>& dofvalues = {}) const;
 
@@ -1093,7 +1095,7 @@ private:
     /// \param [in]  kinematicsChain   a kinematics chain prescribed by a baselink-eelink pair // pmanip
     /// \param [in]  dofvalues         dof values set along the kinematics chain from base link to end-effector link; its size should be either 0 (i.e., using the current dof values) or the same size of the dofs of the kinematics chain
     /// \return true if the registered posture describer successfully computes a vector of posture state values for describing the posture of the kinematics chain.
-    virtual bool ComputePostureStates(std::vector<uint16_t>& posturevalues,
+    virtual bool ComputePostureStates(std::vector<PostureStateInt>& posturevalues,
                                       ManipulatorConstPtr pmanip = ManipulatorConstPtr(),
                                       const std::vector<double>& dofvalues = {}) const;
 
@@ -1223,7 +1225,7 @@ protected:
     dReal _fQuatLimitMaxAngle, _fQuatMaxAngleVelocity, _fQuatAngleResolution, _fQuatAngleWeight;
 
     ConfigurationSpecification _activespec;
-    std::map<LinkPair, PostureDescriberBasePtr> _mPostureDescribers;
+    std::map<LinkPair, PostureDescriberBasePtr> _mPostureDescribers; ///< maps a baselink-eelink pair to a posture describer that is capable of describing the kinematics chain; several manipulators can be attached to the same end-effector with different local tool transforms & directions, while they share the same baselink-eelink pair and the 6D IK hash, so we only need one describer for all these manipulators.
 
 private:
     virtual const char* GetHash() const {
