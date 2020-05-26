@@ -50,7 +50,7 @@ std::string ComputeKinematicsChainHash(const RobotBase::ManipulatorPtr& pmanip, 
 // void RobotBase::Manipulator::serialize(std::ostream& o, int options, IkParameterizationType iktype) const
 std::string ComputeKinematicsChainHash(const LinkPair& kinematicsChain, std::vector<int>& armindices)
 {
-    // duplicate code
+    // duplicate code -> ok
     std::ostringstream ss;
     ss << std::fixed << std::setprecision(SERIALIZATION_PRECISION); // SERIALIZATION_PRECISION = 4 from libopenrave.h 
 

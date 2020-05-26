@@ -1438,8 +1438,15 @@ protected:
         int nSameStateRepeatCount = 0;
         _nSameStateRepeatCount = 0;
         std::vector<unsigned int> vsolutionindices;
-        iksol.GetSolutionIndices(vsolutionindices);
-
+        std::string solutionIndicesName = "solutionindices";
+        auto desc = probot->GetPostureDescriber(_pmanip);
+        if (desc != nullptr) {
+            desc->ComputePostureStates(vsolutionindices, blah);
+            solutionIndicesName = desc->GetKey();
+        }
+        else {
+            iksol.GetSolutionIndices(vsolutionindices);
+        }
         RobotBase::ManipulatorPtr pmanip(_pmanip);
         RobotBasePtr probot = pmanip->GetRobot();
 
@@ -1504,7 +1511,7 @@ protected:
                 paramnewglobal = pmanip->GetBase()->GetTransform() * paramnew;
                 _nSameStateRepeatCount = nSameStateRepeatCount; // could be overwritten by _CallFilters call!
                 IkReturnPtr localret(new IkReturn(IKRA_Success));
-                localret->_mapdata["solutionindices"] = std::vector<dReal>(_vsolutionindices.begin(),_vsolutionindices.end());
+                localret->_mapdata[solutionIndicesName] = std::vector<dReal>(_vsolutionindices.begin(),_vsolutionindices.end());
 
                 bool bNeedCheckEndEffectorEnvCollision = stateCheck.NeedCheckEndEffectorEnvCollision();
                 if( !(filteroptions & IKFO_IgnoreEndEffectorEnvCollisions) ) {
@@ -1543,7 +1550,7 @@ protected:
                 paramnew = pmanip->GetIkParameterization(param,false);
                 paramnewglobal = pmanip->GetBase()->GetTransform() * paramnew;
                 IkReturnPtr localret(new IkReturn(IKRA_Success));
-                localret->_mapdata["solutionindices"] = std::vector<dReal>(_vsolutionindices.begin(),_vsolutionindices.end());
+                localret->_mapdata[solutionIndicesName] = std::vector<dReal>(_vsolutionindices.begin(),_vsolutionindices.end());
                 localret->_vsolution.swap(itravesol->first);
                 listlocalikreturns.push_back(localret);
             }
@@ -1771,7 +1778,7 @@ protected:
             FOREACH(ittestreturn, listtestikreturns) {//itravesol, vravesols) {
                 IkReturnPtr localret = *ittestreturn;
                 _vsolutionindices.resize(0);
-                FOREACH(it, localret->_mapdata["solutionindices"]) {
+                FOREACH(it, localret->_mapdata[solutionIndicesName]) {
                     _vsolutionindices.push_back((unsigned int)(*it+0.5)); // round
                 }
 
@@ -1884,6 +1891,15 @@ protected:
         std::vector<dReal> vravesol(sol.size());
         std::copy(sol.begin(),sol.end(),vravesol.begin());
 
+        std::string solutionIndicesName = "solutionindices";
+        auto desc = probot->GetPostureDescriber(_pmanip);
+        if (desc != nullptr) {
+            desc->ComputePostureStates(vsolutionindices, blah);
+            solutionIndicesName = desc->GetKey();
+        }
+        else {
+            iksol.GetSolutionIndices(vsolutionindices);
+        }
         int nSameStateRepeatCount = 0;
         _nSameStateRepeatCount = 0;
         std::vector< pair<std::vector<dReal>,int> > vravesols;
@@ -1941,7 +1957,7 @@ protected:
                 paramnewglobal = pmanip->GetBase()->GetTransform() * paramnew;
                 _nSameStateRepeatCount = nSameStateRepeatCount; // could be overwritten by _CallFilters call!
                 IkReturnPtr localret(new IkReturn(IKRA_Success));
-                localret->_mapdata["solutionindices"] = std::vector<dReal>(_vsolutionindices.begin(),_vsolutionindices.end());
+                localret->_mapdata[solutionIndicesName] = std::vector<dReal>(_vsolutionindices.begin(),_vsolutionindices.end());
 
                 bool bNeedCheckEndEffectorEnvCollision = stateCheck.NeedCheckEndEffectorEnvCollision();
                 if( !(filteroptions & IKFO_IgnoreEndEffectorEnvCollisions) ) {
@@ -1980,7 +1996,7 @@ protected:
                 paramnew = pmanip->GetIkParameterization(param,false);
                 paramnewglobal = pmanip->GetBase()->GetTransform() * paramnew;
                 IkReturnPtr localret(new IkReturn(IKRA_Success));
-                localret->_mapdata["solutionindices"] = std::vector<dReal>(_vsolutionindices.begin(),_vsolutionindices.end());
+                localret->_mapdata[solutionIndicesName] = std::vector<dReal>(_vsolutionindices.begin(),_vsolutionindices.end());
                 localret->_vsolution.swap(itravesol->first);
                 listlocalikreturns.emplace_back(localret,  paramnew);
             }
@@ -2132,7 +2148,7 @@ protected:
             while(ittestreturn != listlocalikreturns.end()) {
                 IkReturnPtr localret = ittestreturn->first;
                 _vsolutionindices.resize(0);
-                FOREACH(it, localret->_mapdata["solutionindices"]) {
+                FOREACH(it, localret->_mapdata[solutionIndicesName]) {
                     _vsolutionindices.push_back((unsigned int)(*it+0.5)); // round
                 }
 

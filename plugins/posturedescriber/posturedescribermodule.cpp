@@ -39,7 +39,7 @@ PostureDescriberModule::PostureDescriberModule(const EnvironmentBasePtr& penv) :
 
 bool PostureDescriberModule::_LoadPostureDescriberCommand(std::ostream& ssout, std::istream& ssin) {
     std::string robotname, manipname, baselinkname, eelinkname;
-    ssin >> robotname >> manipname;
+    ssin >> robotname >> manipname; //manipname may be manipulator name or base link name
 
     const EnvironmentBasePtr penv = GetEnv();
     const int envId = penv->GetId();

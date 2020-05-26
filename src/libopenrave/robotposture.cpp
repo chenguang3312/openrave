@@ -51,6 +51,7 @@ bool RobotBase::SetPostureDescriber(const LinkPair& kinematicsChain, PostureDesc
 
 bool RobotBase::SetPostureDescriber(ManipulatorConstPtr pmanip, PostureDescriberBasePtr pDescriber)
 {
+    // let's throw exception
     if(pmanip == nullptr) {
         pmanip = this->GetActiveManipulator();
     }
